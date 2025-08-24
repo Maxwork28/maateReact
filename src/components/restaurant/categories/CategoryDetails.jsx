@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { apiService, ADMIN_CATEGORY_DETAILS, ADMIN_CATEGORY_TOGGLE_STATUS } from '../../../utils/apiUtils';
+import api, { ADMIN_CATEGORY_DETAILS, ADMIN_CATEGORY_TOGGLE_STATUS } from '../../../utils/apiUtils';
 
 const CategoryDetails = () => {
   console.log('🔍 [CategoryDetails] Component function called');
@@ -21,7 +21,7 @@ const CategoryDetails = () => {
       setError(null);
 
       console.log('🔍 [CategoryDetails] Fetching category details for categoryId:', categoryId);
-      const response = await apiService.get(ADMIN_CATEGORY_DETAILS(categoryId));
+      const response = await api.get(ADMIN_CATEGORY_DETAILS(categoryId));
       console.log('🔍 [CategoryDetails] API Response:', response);
 
       // Handle different response structures
@@ -54,7 +54,7 @@ const CategoryDetails = () => {
 
   const handleToggleStatus = async () => {
     try {
-      await apiService.put(ADMIN_CATEGORY_TOGGLE_STATUS(categoryId));
+      await api.put(ADMIN_CATEGORY_TOGGLE_STATUS(categoryId));
       toast.success('Category status updated successfully');
       fetchCategoryDetails(); // Refresh the data
     } catch (error) {

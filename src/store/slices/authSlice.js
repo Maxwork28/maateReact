@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { apiService, API_ENDPOINTS } from '../../utils/apiUtils';
+import api, { API_ENDPOINTS } from '../../utils/apiUtils';
 
 // Async thunks
 export const login = createAsyncThunk(
   'auth/login',
   async ({ phone, password }, { rejectWithValue }) => {
     try {
-      const response = await apiService.post(API_ENDPOINTS.ADMIN_LOGIN, {
+      const response = await api.post(API_ENDPOINTS.ADMIN_LOGIN, {
         phone,
         password
       });
@@ -30,7 +30,7 @@ export const getProfile = createAsyncThunk(
   'auth/getProfile',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await apiService.get(API_ENDPOINTS.ADMIN_PROFILE);
+      const response = await api.get(API_ENDPOINTS.ADMIN_PROFILE);
       
       if (response.data.success) {
         return response.data.data;
@@ -49,7 +49,7 @@ export const updateProfile = createAsyncThunk(
   'auth/updateProfile',
   async (profileData, { rejectWithValue }) => {
     try {
-      const response = await apiService.put(API_ENDPOINTS.ADMIN_PROFILE, profileData);
+      const response = await api.put(API_ENDPOINTS.ADMIN_PROFILE, profileData);
       
       if (response.data.success) {
         return response.data.data;
@@ -68,7 +68,7 @@ export const changePassword = createAsyncThunk(
   'auth/changePassword',
   async ({ currentPassword, newPassword }, { rejectWithValue }) => {
     try {
-      const response = await apiService.put(API_ENDPOINTS.ADMIN_CHANGE_PASSWORD, {
+      const response = await api.put(API_ENDPOINTS.ADMIN_CHANGE_PASSWORD, {
         currentPassword,
         newPassword
       });
@@ -90,7 +90,7 @@ export const logout = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      await apiService.post(API_ENDPOINTS.ADMIN_LOGOUT);
+      await api.post(API_ENDPOINTS.ADMIN_LOGOUT);
       // Clear token from localStorage
       localStorage.removeItem('token');
       return true;

@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { apiService, API_ENDPOINTS } from '../../utils/apiUtils';
+import api, { API_ENDPOINTS } from '../../utils/apiUtils';
 
 // Async thunks
 export const fetchDeliveryMen = createAsyncThunk(
   'deliveryMen/fetchDeliveryMen',
   async (params = {}, { rejectWithValue }) => {
     try {
-      const response = await apiService.get(API_ENDPOINTS.DELIVERY_MEN, { params });
-      return response;
+      const response = await api.get(API_ENDPOINTS.DELIVERY_MEN, { params });
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Failed to fetch delivery men');
     }
@@ -18,8 +18,8 @@ export const fetchDeliveryManDetails = createAsyncThunk(
   'deliveryMen/fetchDeliveryManDetails',
   async (deliveryManId, { rejectWithValue }) => {
     try {
-      const response = await apiService.get(API_ENDPOINTS.DELIVERY_MAN_DETAILS(deliveryManId));
-      return response;
+      const response = await api.get(API_ENDPOINTS.DELIVERY_MAN_DETAILS(deliveryManId));
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Failed to fetch delivery man details');
     }

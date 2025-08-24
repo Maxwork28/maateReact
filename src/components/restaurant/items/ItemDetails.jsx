@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { apiService, ADMIN_ITEM_DETAILS, ADMIN_ITEM_TOGGLE_STATUS, ADMIN_ITEM_AVAILABILITY } from '../../../utils/apiUtils';
+import api, { ADMIN_ITEM_DETAILS, ADMIN_ITEM_TOGGLE_STATUS, ADMIN_ITEM_AVAILABILITY } from '../../../utils/apiUtils';
 
 const ItemDetails = () => {
   console.log('🔍 [ItemDetails] Component function called');
@@ -21,7 +21,7 @@ const ItemDetails = () => {
       setError(null);
 
       console.log('🔍 [ItemDetails] Fetching item details for itemId:', itemId);
-      const response = await apiService.get(ADMIN_ITEM_DETAILS(itemId));
+      const response = await api.get(ADMIN_ITEM_DETAILS(itemId));
       console.log('🔍 [ItemDetails] API Response:', response);
 
       // Handle different response structures
@@ -54,7 +54,7 @@ const ItemDetails = () => {
 
   const handleToggleStatus = async () => {
     try {
-      await apiService.put(ADMIN_ITEM_TOGGLE_STATUS(itemId));
+      await api.put(ADMIN_ITEM_TOGGLE_STATUS(itemId));
       toast.success('Item status updated successfully');
       fetchItemDetails(); // Refresh the data
     } catch (error) {
@@ -66,7 +66,7 @@ const ItemDetails = () => {
   const handleToggleAvailability = async () => {
     try {
       const newAvailability = item.availability === 'available' ? 'limited' : 'available';
-      await apiService.put(ADMIN_ITEM_AVAILABILITY(itemId), { availability: newAvailability });
+      await api.put(ADMIN_ITEM_AVAILABILITY(itemId), { availability: newAvailability });
       toast.success('Item availability updated successfully');
       fetchItemDetails(); // Refresh the data
     } catch (error) {

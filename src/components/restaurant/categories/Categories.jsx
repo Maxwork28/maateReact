@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { apiService, ADMIN_CATEGORIES } from '../../../utils/apiUtils';
+import api, { ADMIN_CATEGORIES } from '../../../utils/apiUtils';
 
 const Categories = () => {
   const { id } = useParams();
@@ -18,7 +18,7 @@ const Categories = () => {
     try {
       setLoading(true);
       console.log('🔍 [Categories] Fetching categories for restaurant:', id);
-      const response = await apiService.get(`${ADMIN_CATEGORIES}?restaurant=${id}`);
+      const response = await api.get(`${ADMIN_CATEGORIES}?restaurant=${id}`);
       console.log('🔍 [Categories] API Response:', response);
       
       // Handle different response structures
@@ -46,7 +46,7 @@ const Categories = () => {
 
   const handleToggleStatus = async (categoryId, currentStatus) => {
     try {
-      await apiService.put(`${ADMIN_CATEGORIES}/${categoryId}/toggle-status`);
+      await api.put(`${ADMIN_CATEGORIES}/${categoryId}/toggle-status`);
       toast.success('Category status updated successfully');
       fetchCategories(); // Refresh the list
     } catch (err) {

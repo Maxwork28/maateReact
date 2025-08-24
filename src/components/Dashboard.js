@@ -2,12 +2,14 @@ import React, { useEffect, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from '../store/slices/authSlice';
 import { selectUser, selectNeedsProfileRefresh } from '../store/selectors/authSelectors';
+import { getUserStats } from '../store/slices/usersSlice';
 
 const Dashboard = React.memo(() => {
   console.log('🏠 Dashboard component rendered');
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const needsProfileRefresh = useSelector(selectNeedsProfileRefresh);
+  const { userStats } = useSelector((state) => state.users);
   
   console.log('👤 Dashboard - Current user:', user);
   console.log('🔄 Dashboard - Needs profile refresh:', needsProfileRefresh);
@@ -19,6 +21,9 @@ const Dashboard = React.memo(() => {
     } else {
       console.log('⏭️ Dashboard useEffect - Skipping profile fetch (not needed)');
     }
+    
+    // Fetch user statistics
+    dispatch(getUserStats());
   }, [dispatch, needsProfileRefresh]);
 
   const getStatusColor = useCallback((status) => {
@@ -58,7 +63,7 @@ const Dashboard = React.memo(() => {
     },
     { 
       title: 'Total Users', 
-      value: '5,678', 
+      value: userStats?.data?.total || userStats?.total || '5,678', 
       change: '+8%', 
       changeType: 'positive',
       icon: '👥',
@@ -76,7 +81,7 @@ const Dashboard = React.memo(() => {
       bgColor: 'bg-orange-50',
       borderColor: 'border-orange-200'
     },
-  ], []);
+  ], [userStats]);
 
   const recentOrders = useMemo(() => [
     { id: '#1234', restaurant: 'Pizza Palace', customer: 'John Doe', amount: '$45.00', status: 'Delivered', time: '2 min ago' },

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { apiService, ADMIN_PLANS } from '../../../utils/apiUtils';
+import api, { ADMIN_PLANS } from '../../../utils/apiUtils';
 
 const Plans = () => {
   const { id } = useParams();
@@ -18,7 +18,7 @@ const Plans = () => {
     try {
       setLoading(true);
       console.log('🔍 [Plans] Fetching plans for restaurant:', id);
-      const response = await apiService.get(`${ADMIN_PLANS}?restaurant=${id}`);
+      const response = await api.get(`${ADMIN_PLANS}?restaurant=${id}`);
       console.log('🔍 [Plans] API Response:', response);
       
       // Handle different response structures
@@ -47,7 +47,7 @@ const Plans = () => {
 
   const handleToggleStatus = async (planId, currentStatus) => {
     try {
-      await apiService.put(`${ADMIN_PLANS}/${planId}/toggle-status`);
+      await api.put(`${ADMIN_PLANS}/${planId}/toggle-status`);
       toast.success('Plan status updated successfully');
       fetchPlans(); // Refresh the list
     } catch (err) {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { apiService, ADMIN_PLAN_DETAILS, ADMIN_PLAN_TOGGLE_STATUS } from '../../../utils/apiUtils';
+import api, { ADMIN_PLAN_DETAILS, ADMIN_PLAN_TOGGLE_STATUS } from '../../../utils/apiUtils';
 
 const PlanDetails = () => {
   console.log('🔍 [PlanDetails] Component function called');
@@ -21,7 +21,7 @@ const PlanDetails = () => {
       setError(null);
 
       console.log('🔍 [PlanDetails] Fetching plan details for planId:', planId);
-      const response = await apiService.get(ADMIN_PLAN_DETAILS(planId));
+      const response = await api.get(ADMIN_PLAN_DETAILS(planId));
       console.log('🔍 [PlanDetails] API Response:', response);
 
       // Handle different response structures
@@ -54,7 +54,7 @@ const PlanDetails = () => {
 
   const handleToggleStatus = async () => {
     try {
-      await apiService.put(ADMIN_PLAN_TOGGLE_STATUS(planId));
+      await api.put(ADMIN_PLAN_TOGGLE_STATUS(planId));
       toast.success('Plan status updated successfully');
       fetchPlanDetails(); // Refresh the data
     } catch (error) {

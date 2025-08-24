@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { apiService, API_ENDPOINTS } from '../../utils/apiUtils';
+import api, { API_ENDPOINTS } from '../../utils/apiUtils';
 
-// Async thunks
+// Async thunks for order management
 export const fetchOrders = createAsyncThunk(
   'orders/fetchOrders',
   async (params = {}, { rejectWithValue }) => {
     try {
-      const response = await apiService.get(API_ENDPOINTS.ORDERS, { params });
-      return response;
+      const response = await api.get(API_ENDPOINTS.ORDERS, { params });
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Failed to fetch orders');
     }
@@ -18,8 +18,8 @@ export const fetchOrderDetails = createAsyncThunk(
   'orders/fetchOrderDetails',
   async (orderId, { rejectWithValue }) => {
     try {
-      const response = await apiService.get(API_ENDPOINTS.ORDER_DETAILS(orderId));
-      return response;
+      const response = await api.get(API_ENDPOINTS.ORDER_DETAILS(orderId));
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Failed to fetch order details');
     }

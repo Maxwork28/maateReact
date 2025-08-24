@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { apiService, ADMIN_ITEMS } from '../../../utils/apiUtils';
+import api, { ADMIN_ITEMS } from '../../../utils/apiUtils';
 
 const Items = () => {
   const { id } = useParams();
@@ -25,7 +25,7 @@ const Items = () => {
       }
       
       console.log('🔍 [Items] Fetching items for restaurant:', id, 'category:', categoryFilter);
-      const response = await apiService.get(`${ADMIN_ITEMS}?${queryParams}`);
+      const response = await api.get(`${ADMIN_ITEMS}?${queryParams}`);
       console.log('🔍 [Items] API Response:', response);
       
       // Handle different response structures
@@ -53,7 +53,7 @@ const Items = () => {
 
   const handleToggleStatus = async (itemId, currentStatus) => {
     try {
-      await apiService.put(`${ADMIN_ITEMS}/${itemId}/toggle-status`);
+      await api.put(`${ADMIN_ITEMS}/${itemId}/toggle-status`);
       toast.success('Item status updated successfully');
       fetchItems(); // Refresh the list
     } catch (err) {
@@ -64,7 +64,7 @@ const Items = () => {
   const handleToggleAvailability = async (itemId, currentAvailability) => {
     try {
       const newAvailability = currentAvailability === 'available' ? 'limited' : 'available';
-      await apiService.put(`${ADMIN_ITEMS}/${itemId}/availability`, { availability: newAvailability });
+      await api.put(`${ADMIN_ITEMS}/${itemId}/availability`, { availability: newAvailability });
       toast.success('Item availability updated successfully');
       fetchItems(); // Refresh the list
     } catch (err) {
